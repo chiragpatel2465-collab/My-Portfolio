@@ -17,7 +17,7 @@ import { scrollToSection } from "../utils/scrollToSection";
 const PLACEHOLDER_NAME = "Chirag Patel";
 const PLACEHOLDER_DESC =
   "I am a student of Shree Swaminarayan Institute of Technology, studying IT. I am passionate about building web applications and learning new technologies.";
-const PLACEHOLDER_IMAGE_URL = "/Profile_image.png";
+const PLACEHOLDER_IMAGE_URL = "/Profile_img.webp";
 
 
 const ROLES = ["Frontend Developer", "React Developer", "MERN Enthusiast"];
@@ -421,49 +421,49 @@ const HeroSection = ({ contactRef, projectRef }) => {
         </motion.div>
 
         {/* RIGHT COLUMN: Avatar Card */}
+      <motion.div
+        className="hidden lg:flex justify-center items-center"
+        variants={cardEntryVariants}
+        initial="hidden"
+        animate="visible"
+        style={{ transformPerspective: 1000 }}
+      >
         <motion.div
-          className="hidden lg:flex justify-center items-center"
-          variants={cardEntryVariants}
-          initial="hidden"
-          animate="visible"
-          style={{ transformPerspective: 1000 }}
+          style={{ rotateX: smoothRotateX, rotateY: smoothRotateY }}
+          className="relative w-92 h-92 md:w-92 md:h-92"
         >
+         {/* Glow Ring */}
           <motion.div
-            style={{ rotateX: smoothRotateX, rotateY: smoothRotateY }}
-            className="relative w-92 h-92 md:w-92 md:h-92"
+            className="absolute inset-0 rounded-3xl bg-linear-to-br from-violet-600/40 to-fuchsia-600/20 blur-2xl z-0"
+            animate={prefersReducedMotion ? {} : { scale: [1, 1.08, 1] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          />
+
+          {/* Glass Card Wrapper with Float Animation */}
+          <motion.div
+            animate={prefersReducedMotion ? {} : { y: [0, -12, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            className=" relative w-full h-full z-10"
           >
-            {/* Glow Ring */}
-            <motion.div
-              className="absolute inset-0 rounded-3xl bg-linear-to-br from-violet-600/40 to-fuchsia-600/20 blur-2xl z-0"
-              animate={prefersReducedMotion ? {} : { scale: [1, 1.08, 1] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            />
-
-            {/* Glass Card Wrapper with Float Animation */}
-            <motion.div
-              animate={prefersReducedMotion ? {} : { y: [0, -12, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="relative w-full h-full z-10"
+            <div
+              className="w-full h-full rounded-full overflow-hidden backdrop-blur-xl bg-white/8 border border-white/15 relative"
+              style={{ boxShadow: GLASS_SHADOW }}
             >
-              <div
-                className="w-full h-full rounded-full overflow-hidden backdrop-blur-xl bg-white/8 border border-white/15 relative"
-                style={{ boxShadow: GLASS_SHADOW }}
-              >
-                <img
-                  src={PLACEHOLDER_IMAGE_URL}
-                  alt={`${PLACEHOLDER_NAME} - Frontend Developer`}
-                  className="w-full h-full object-cover object-center"
-                />
+              <img
+                src={PLACEHOLDER_IMAGE_URL}
+                alt={`${PLACEHOLDER_NAME} - Frontend Developer`}
+                className="w-full h-full object-cover object-center"
+              />
 
-                {/* Bottom Gradient Overlay */}
-                <div
-                  className="absolute bottom-0 left-0 right-0 h-1/3 bg-linear-to-t from-[#0a0a0f]/60 to-transparent pointer-events-none"
-                  aria-hidden="true"
-                />
-              </div>
-            </motion.div>
+              {/* Bottom Gradient Overlay */}
+              <div
+                className="absolute bottom-0 left-0 right-0 h-1/3 bg-linear-to-t from-[#0a0a0f]/60 to-transparent pointer-events-none"
+                aria-hidden="true"
+              />
+            </div>
           </motion.div>
         </motion.div>
+      </motion.div>
       </div>
     </section>
   );

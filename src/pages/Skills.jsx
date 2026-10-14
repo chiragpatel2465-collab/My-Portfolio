@@ -1,10 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import {  useRef } from "react";
 import {
   motion,
-  useInView,
-  useMotionValue,
-  useTransform,
-  animate,
   useReducedMotion,
 } from "framer-motion";
 import {
@@ -13,15 +9,15 @@ import {
   SiReact,
   SiTailwindcss,
   SiTypescript,
+  SiFramer,
+  SiExpress,
+  SiMongodb,
   SiGithub,
   SiVite,
-  SiFigma,
-  SiAnthropic,
+  SiPostman,
+  SiClaude,
 } from "react-icons/si";
-import { FaCss3Alt } from "react-icons/fa";
-import { TbBrandFramerMotion } from "react-icons/tb";
-
-const CIRCUMFERENCE = 314.16; // 2 * Math.PI * 50
+import { FaNodeJs ,FaCss3Alt} from "react-icons/fa";
 
 const ICON_MAP = {
   SiHtml5,
@@ -30,52 +26,53 @@ const ICON_MAP = {
   SiReact,
   SiTailwindcss,
   SiTypescript,
+  SiFramer,
+  FaNodeJs,
+  SiExpress,
+  SiMongodb,
   SiGithub,
   SiVite,
-  SiFigma,
-  SiAnthropic,
-  TbBrandFramerMotion,
+  SiPostman,
+  SiClaude,
+  
 };
 
 const SKILLS_DATA = [
   {
-    category: "FRONTEND",
+    category: "Frontend",
     skills: [
-      { name: "HTML5", percent: 95, icon: "SiHtml5", color: "#e34f26" },
-      { name: "CSS3", percent: 90, icon: "FaCss3Alt", color: "#1572b6" },
-      { name: "JavaScript", percent: 88, icon: "SiJavascript", color: "#f7df1e" },
-      { name: "React", percent: 85, icon: "SiReact", color: "#61dafb" },
-      { name: "Tailwind CSS", percent: 87, icon: "SiTailwindcss", color: "#38bdf8" },
-      { name: "TypeScript", percent: 75, icon: "SiTypescript", color: "#3178c6" },
-      { name: "Framer Motion", percent: 78, icon: "TbBrandFramerMotion", color: "#8b5cf6" },
+      { name: "HTML5",  icon: "SiHtml5", color: "#e34f26" },
+      { name: "CSS3", icon: "FaCss3Alt", color: "#1572b6" },
+      { name: "JavaScript",  icon: "SiJavascript", color: "#f7df1e" },
+      { name: "React",  icon: "SiReact", color: "#61dafb" },
+      { name: "Tailwind CSS",  icon: "SiTailwindcss", color: "#38bdf8" },
+      { name: "TypeScript",  icon: "SiTypescript", color: "#3178c6" },
+      { name: "Framer Motion",  icon: "SiFramer", color: "white" },
     ],
   },
   {
-    category: "TOOLS & WORKFLOW",
+    category: "Backend & Databases",
     skills: [
-      { name: "Git & GitHub", percent: 88, icon: "SiGithub", color: "#ffffff" },
-      { name: "Vite", percent: 85, icon: "SiVite", color: "#646cff" },
-      { name: "Figma", percent: 72, icon: "SiFigma", color: "#f24e1e" },
-      { name: "Claude AI", percent: 90, icon: "SiAnthropic", color: "#cc9b7a" },
-      { name: "Antigravity", percent: 80, icon: null, color: "#8b5cf6" },
+      { name: "Node.js",  icon: "FaNodeJs", color: "#1f6b22" },
+      { name: "Express.js", icon: "SiExpress", color: "white" },
+      { name: "MongoDB",  icon: "SiMongodb", color: "#2fa450" },
+     
     ],
   },
   {
-    category: "SOFT SKILLS",
+    category: "Tools & Workflow",
     skills: [
-      { name: "Problem Solving", percent: 92, icon: null, emoji: "🧩", color: "#8b5cf6" },
-      { name: "Communication", percent: 85, icon: null, emoji: "💬", color: "#a78bfa" },
-      { name: "Team Collaboration", percent: 88, icon: null, emoji: "🤝", color: "#c4b5fd" },
-      { name: "Attention to Detail", percent: 90, icon: null, emoji: "🔍", color: "#8b5cf6" },
-      { name: "Adaptability", percent: 87, icon: null, emoji: "🔄", color: "#a78bfa" },
-      { name: "Time Management", percent: 82, icon: null, emoji: "⏱️", color: "#c4b5fd" },
+      { name: "Git & GitHub", icon: "SiGithub", color: "#ffffff" },
+      { name: "Vite", icon: "SiVite", color: "#646cff" },
+      { name: "Postman", icon: "SiPostman", color: "#f24e1e" },
+      { name: "Claude AI", icon: "SiClaude", color: "#d9633f" },
     ],
   },
 ];
 
 const SparkleIcon = ({ color }) => (
   <svg
-    width="28"
+    width="25"
     height="28"
     viewBox="0 0 24 24"
     fill="none"
@@ -91,39 +88,14 @@ const SparkleIcon = ({ color }) => (
 
 const RadialMeter = ({ percent, color, icon, name, emoji }) => {
   const cardRef = useRef(null);
-  const isInView = useInView(cardRef, { once: true, amount: 0.4 });
-  const prefersReducedMotion = useReducedMotion();
-  
-  const progressValue = useMotionValue(0);
-  const roundedPercent = useTransform(progressValue, (latest) => Math.round(latest));
-  const [dashOffset, setDashOffset] = useState(CIRCUMFERENCE);
+ 
+ 
 
-  useEffect(() => {
-    const unsubscribe = progressValue.on("change", (latest) => {
-      setDashOffset(CIRCUMFERENCE - (CIRCUMFERENCE * latest) / 100);
-    });
-    return () => unsubscribe();
-  }, [progressValue]);
-
-  useEffect(() => {
-    if (prefersReducedMotion) {
-      progressValue.set(percent);
-      return;
-    }
-    
-    if (isInView) {
-      const controls = animate(progressValue, percent, {
-        duration: 1.4,
-        ease: [0.33, 1, 0.68, 1],
-      });
-      return () => controls.stop();
-    }
-  }, [isInView, percent, prefersReducedMotion, progressValue]);
-
+ 
   let CenterContent;
   if (icon && ICON_MAP[icon]) {
     const IconComponent = ICON_MAP[icon];
-    CenterContent = <IconComponent size={28} color={color} />;
+    CenterContent = <IconComponent size={44} color={color} />;
   } else if (emoji) {
     CenterContent = <span className="text-2xl">{emoji}</span>;
   } else if (name === "Antigravity") {
@@ -138,50 +110,19 @@ const RadialMeter = ({ percent, color, icon, name, emoji }) => {
 
   return (
     <div
-      ref={cardRef}
+     
       className="flex flex-col items-center group w-full"
       role="img"
-      aria-label={`${name}: ${percent}% proficiency`}
+      
     >
       <div className="relative w-20 h-20 sm:w-22 sm:h-22 lg:w-24 lg:h-24 flex items-center justify-center">
-        <svg
-          className="w-full h-full transform"
-          viewBox="0 0 120 120"
-          aria-hidden="true"
-        >
-          {/* Outer track */}
-          <circle
-            cx="60"
-            cy="60"
-            r="50"
-            fill="none"
-            stroke="rgba(255,255,255,0.06)"
-            strokeWidth="8"
-          />
-          {/* Inner animated fill */}
-          <circle
-            cx="60"
-            cy="60"
-            r="50"
-            fill="none"
-            stroke={color}
-            strokeWidth="8"
-            strokeLinecap="round"
-            strokeDasharray={`${CIRCUMFERENCE} ${CIRCUMFERENCE}`}
-            strokeDashoffset={dashOffset}
-            transform="rotate(-90 60 60)"
-            style={{ filter: `drop-shadow(0 0 6px ${color}80)` }}
-            className="transition-all duration-300"
-          />
-        </svg>
+        
+        
 
         {/* Center content overlay */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
           {CenterContent}
-          <div className="text-xs font-bold text-white/70 mt-1 flex items-center">
-            <motion.span>{roundedPercent}</motion.span>
-            <span>%</span>
-          </div>
+          
         </div>
       </div>
 
@@ -253,12 +194,12 @@ export default function SkillsSection() {
         {SKILLS_DATA.map((categoryData, index) => {
           // Determine grid columns dynamically based on category type as per requirements
           let gridColsClass = "grid-cols-3 sm:grid-cols-4";
-          if (categoryData.category === "FRONTEND") {
-            gridColsClass += " md:grid-cols-5 lg:grid-cols-7";
-          } else if (categoryData.category === "TOOLS & WORKFLOW") {
+          if (categoryData.category === "Frontend") {
+            gridColsClass += " md:grid-cols-5 lg:grid-cols-5";
+          } else if (categoryData.category === "Backend & Databases") {
             gridColsClass += " md:grid-cols-5";
-          } else if (categoryData.category === "SOFT SKILLS") {
-            gridColsClass += " md:grid-cols-6";
+          } else if (categoryData.category === "Tools & Workflow") {
+            gridColsClass += " md:grid-cols-4";
           }
 
           return (
@@ -293,7 +234,7 @@ export default function SkillsSection() {
                     }}
                   >
                     <RadialMeter
-                      percent={skill.percent}
+                      
                       color={skill.color}
                       icon={skill.icon}
                       name={skill.name}

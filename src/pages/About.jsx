@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 
-const PHOTO_URL = "/Profile_image.png";
+const PHOTO_URL = "/Profile_img.webp";
 
 const PARAGRAPH_1 = `I'm Chirag Patel, a frontend developer and IT student based in India, actively looking for my first professional opportunity. I love crafting clean, responsive, and visually engaging web experiences that feel great to use.`;
 

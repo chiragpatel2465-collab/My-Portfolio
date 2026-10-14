@@ -49,7 +49,7 @@ export default function Nav({ homeRef, aboutRef, projectRef, skillRef, contactRe
               whileHover={{ scale: 1.1 }}
               transition={{ duration: 0.3 }}
             >
-              <img src="/Profile_image.png" alt="Profile Image" className="w-10 h-10 rounded-full border-2 border-white object-contain" />
+              <img src="/Profile_img.webp" alt="Profile Image" className="w-10 h-10 rounded-full border-2 border-white object-contain" />
               <div className="flex flex-col gap-0 mx-3">
                 <p className="text-sm font-bold text-violet-500">Chirag Patel</p>
                 <p className="text-xs text-slate-400">Frontend Developer</p>
